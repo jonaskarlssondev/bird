@@ -23,6 +23,7 @@ const Home: NextPage = () => {
               Press to fetch GOOG stock data
             </p>
             <TickerShowCase />
+            <AuthShowcase />
           </div>
         </div>
       </main>
