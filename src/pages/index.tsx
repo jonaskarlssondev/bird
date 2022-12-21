@@ -32,9 +32,9 @@ const Content: React.FC = () => {
     if (sessionData) {
       return (
         <section className="flex h-fit w-full justify-between">
-          <p className="font-extrabold leading-tight tracking-tight text-dark-accent/80 sm:text-[2rem]">
+          <span className="font-extrabold leading-tight tracking-tight text-dark-accent/80 sm:text-[2rem]">
             BIRD
-          </p>
+          </span>
           <Profile />
         </section>
       );
