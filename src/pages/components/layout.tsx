@@ -1,9 +1,21 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import Login from "../login";
 import Navbar from "./navbar";
 import Profile from "./profile";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const { data: sessionData, status } = useSession();
+
+  if (status == "loading") {
+    return <></>;
+  }
+
+  if (!sessionData) {
+    return <Login />;
+  }
+
   return (
     <>
       <Head>
