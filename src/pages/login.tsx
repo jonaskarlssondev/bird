@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import Profile from "./components/profile";
+import Profile from "../components/profile";
 
 const Login: NextPage = () => {
   return (

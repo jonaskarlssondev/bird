@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
           />
         </svg>
       </Link>
-      <Link href="/" className="hover:cursor-pointer">
+      <Link href="/charts" className="hover:cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

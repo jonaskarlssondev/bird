@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import Login from "../login";
+import Login from "../pages/login";
 import Navbar from "./navbar";
 import Profile from "./profile";
 
