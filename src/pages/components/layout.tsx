@@ -1,0 +1,29 @@
+import Head from "next/head";
+import Link from "next/link";
+import Navbar from "./navbar";
+import Profile from "./profile";
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <Head>
+        <title>Bird</title>
+        <meta
+          name="description"
+          content="Financial analysis tool for overview and flags"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <div className="flex min-h-screen w-full flex-col bg-dark-primary p-2 text-dark-contrast">
+        <section className="flex h-fit w-full justify-between">
+          <span className="mt-[-0.5rem] font-extrabold leading-tight tracking-tight text-dark-accent/80 sm:text-[2rem]">
+            <Link href="/">BIRD</Link>
+          </span>
+          <Navbar />
+          <Profile expandable={true} />
+        </section>
+        <main>{children}</main>
+      </div>
+    </>
+  );
+}
