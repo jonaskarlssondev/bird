@@ -1,14 +1,13 @@
-// Prisma setup
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
-// Database models
 model candles {
   id     String   @id
   ticker String
@@ -23,7 +22,25 @@ model candles {
   @@index([ticker], map: "idx_candles_ticker")
 }
 
-// Next auth
+model Watchlist {
+  id      String  @id @default(cuid())
+  name    String
+  userId  String
+  tickers  WatchlistTicker[]
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId])
+}
+
+model WatchlistTicker {
+  id          String    @id @default(cuid())
+  watchlistId String  
+  ticker      String
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+
+  @@unique([ticker, watchlistId])
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -58,6 +75,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  watchlist     Watchlist[]
 }
 
 model VerificationToken {
