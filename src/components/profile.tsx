@@ -1,4 +1,5 @@
 import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
 export const Profile: React.FC<{ expandable?: boolean }> = ({
@@ -19,7 +20,13 @@ export const Profile: React.FC<{ expandable?: boolean }> = ({
         }}
       >
         {sessionData && sessionData.user?.image && (
-          <img className="rounded-full" src={sessionData.user?.image} />
+          <Image
+            className="rounded-full"
+            width={40}
+            height={40}
+            src={sessionData.user?.image}
+            alt="User profile image"
+          />
         )}
       </div>
 
@@ -36,7 +43,13 @@ const ExpandedProfile: React.FC = () => {
       <div className="flex items-center justify-center gap-2 whitespace-nowrap p-2">
         <div className="h-14 w-14">
           {sessionData && sessionData.user?.image && (
-            <img className="rounded-full" src={sessionData.user?.image} />
+            <Image
+              className="rounded-full"
+              width={56}
+              height={56}
+              src={sessionData.user?.image}
+              alt="User profile image"
+            />
           )}
         </div>
         {sessionData && <span>{sessionData.user?.name}</span>}

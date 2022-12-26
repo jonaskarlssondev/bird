@@ -1,4 +1,4 @@
-import { Watchlist, WatchlistTicker } from "@prisma/client";
+import { Watchlist, type WatchlistTicker } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
@@ -32,7 +32,7 @@ const WatchListSelector: React.FC = () => {
 
   return (
     <div className="flex h-fit w-fit flex-col divide-y divide-dark-secondary rounded border border-solid border-dark-secondary">
-      <span className="p-2">You don't have a watchlist</span>
+      <span className="p-2">You do not have a watchlist</span>
       <CreateWatchlist onSuccess={() => refetch()} />
     </div>
   );
