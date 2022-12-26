@@ -3,10 +3,10 @@ import { z } from "zod";
 import { router, protectedProcedure } from "../trpc";
 
 export const userRouter = router({
-  getWatchLists: protectedProcedure
+  getWatchlist: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(({ input, ctx }) => {
-      return ctx.prisma.watchlist.findMany({
+      return ctx.prisma.watchlist.findFirst({
         where: {
           userId: input.userId,
         },
@@ -16,15 +16,34 @@ export const userRouter = router({
       });
     }),
 
-  getWatchlist: protectedProcedure
-    .input(z.object({ watchListId: z.string() }))
-    .query(({ input, ctx }) => {
-      return ctx.prisma.watchlist.findUnique({
-        where: {
-          id: input.watchListId,
+  createWatchlist: protectedProcedure
+    .input(z.object({ name: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.watchlist.create({
+        data: {
+          name: input.name,
+          userId: ctx.session.user.id,
         },
-        include: {
-          tickers: true,
+      });
+    }),
+
+  addTicker: protectedProcedure
+    .input(z.object({ watchlistId: z.string(), ticker: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.watchlistTicker.create({
+        data: {
+          ticker: input.ticker,
+          watchlistId: input.watchlistId,
+        },
+      });
+    }),
+
+  removeTicker: protectedProcedure
+    .input(z.object({ tickerId: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.watchlistTicker.delete({
+        where: {
+          id: input.tickerId,
         },
       });
     }),
