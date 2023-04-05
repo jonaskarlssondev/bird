@@ -13,7 +13,7 @@ export const candlesRouter = router({
           },
         },
         orderBy: {
-          date: "asc",
+          date: "desc",
         },
       });
     }),
