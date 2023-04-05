@@ -39,7 +39,7 @@ const ExpandedProfile: React.FC = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <div className="z-[999] flex h-fit w-fit flex-col divide-y divide-dark-secondary rounded border border-solid border-dark-secondary">
+    <div className="z-[999] flex h-fit w-fit flex-col divide-y divide-dark-secondary rounded border border-solid border-dark-secondary bg-dark-primary">
       <div className="flex items-center justify-center gap-2 whitespace-nowrap p-2">
         <div className="h-14 w-14">
           {sessionData && sessionData.user?.image && (
