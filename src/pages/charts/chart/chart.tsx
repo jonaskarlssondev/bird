@@ -40,7 +40,7 @@ const ChartFrame: React.FC<{ candles: candles[]; ticker: string }> = (
   const maxY = Math.max(...props.candles.map((x) => x.high));
   const minY = Math.max(0, Math.min(...props.candles.map((x) => x.low)));
 
-  const factor = 750 / (maxY - minY);
+  const factor = 500 / (maxY - minY);
 
   return (
     <div className="flex h-full min-h-[250px] w-full flex-col items-center">
