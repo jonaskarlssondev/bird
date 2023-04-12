@@ -3,7 +3,9 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 
-const WatchListSelector: React.FC = () => {
+const WatchListSelector: React.FC<{
+  onSelectTicker: (ticker: string) => void;
+}> = (props) => {
   const { data: sessionData } = useSession();
 
   if (!sessionData || !sessionData.user) {
@@ -23,6 +25,7 @@ const WatchListSelector: React.FC = () => {
       <div className="flex h-fit w-fit flex-col divide-y divide-dark-secondary rounded border border-solid border-dark-secondary">
         <Watchlist
           list={data}
+          onSelectTicker={(ticker) => props.onSelectTicker(ticker)}
           onAddTickerSuccess={() => refetch()}
           onRemoveTickerSuccess={() => refetch()}
         />
@@ -42,6 +45,7 @@ export default WatchListSelector;
 
 const Watchlist: React.FC<{
   list: Watchlist & { tickers: WatchlistTicker[] };
+  onSelectTicker: (ticker: string) => void;
   onAddTickerSuccess: () => void;
   onRemoveTickerSuccess: () => void;
 }> = (props) => {
@@ -53,6 +57,14 @@ const Watchlist: React.FC<{
 
   const remove = (id: string) => {
     removeTicker.mutate({ tickerId: id });
+  };
+
+  const [ticker, setTicker] = useState(props.list.tickers[0]?.ticker);
+  const selectTicker = (tckr: string) => {
+    if (ticker !== tckr) {
+      setTicker(tckr);
+      props.onSelectTicker(tckr);
+    }
   };
 
   return (
@@ -78,7 +90,10 @@ const Watchlist: React.FC<{
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-            <span className="ml-1 w-fit rounded border border-solid border-dark-secondary px-1">
+            <span
+              className="ml-1 w-fit rounded border border-solid border-dark-secondary px-1 hover:cursor-pointer hover:bg-dark-secondary"
+              onClick={() => selectTicker(x.ticker)}
+            >
               {x.ticker}
             </span>
           </li>
