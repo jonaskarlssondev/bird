@@ -15,8 +15,10 @@ const Charts: NextPage = () => {
           />
         </span>
 
-        <span className="ml-2 max-w-[calc(100vw-32rem)] flex-1">
-          <Chart ticker={activeTicker} />
+        <span className="flex max-w-[calc(100vw-32rem)] flex-1 justify-center">
+          <span className="flex max-w-[1750px]">
+            <Chart ticker={activeTicker} />
+          </span>
         </span>
 
         <span className="w-64"></span>

@@ -1,6 +1,7 @@
 import { candles } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../../utils/trpc";
+import ChartFrame from "./chartFrame";
 
 const Chart: React.FC<{ ticker: string }> = (props) => {
   const { data: sessionData } = useSession();
@@ -11,6 +12,7 @@ const Chart: React.FC<{ ticker: string }> = (props) => {
 
   const { data, status } = trpc.candles.getByTicker.useQuery({
     ticker: props.ticker,
+    limit: 100,
   });
 
   if (status === "loading") {
@@ -18,9 +20,22 @@ const Chart: React.FC<{ ticker: string }> = (props) => {
   }
 
   if (data) {
+    const maxHeight = 500;
+
+    const maxY = Math.max(...data.map((x) => x.high));
+    const minY = Math.max(0, Math.min(...data.map((x) => x.low)));
+
+    // Pixels Per Currency - Computes the number of pixels per currency unit.
+    // If a security has moved 500 e.g. dollars in the timespan - then each dollar would be represented by 1 pixel.
+    const ppc = maxHeight / (maxY - minY);
+
     return (
       <div className="flex-1 flex-col rounded border border-solid border-dark-secondary p-2">
-        <ChartFrame ticker={props.ticker} candles={data} />
+        <ChartFrame title={props.ticker} candles={data}>
+          {data.map((c) => (
+            <Candle key={c.id} candle={c} factor={ppc} max={maxY} />
+          ))}
+        </ChartFrame>
       </div>
     );
   }
@@ -34,58 +49,26 @@ const Chart: React.FC<{ ticker: string }> = (props) => {
 
 export default Chart;
 
-const ChartFrame: React.FC<{ candles: candles[]; ticker: string }> = (
-  props
-) => {
-  const maxY = Math.max(...props.candles.map((x) => x.high));
-  const minY = Math.max(0, Math.min(...props.candles.map((x) => x.low)));
-
-  const factor = 500 / (maxY - minY);
-
-  return (
-    <div className="flex h-full min-h-[250px] w-full flex-col items-center">
-      <div>{props.ticker}</div>
-      <div className="flex w-full">
-        <div className="flex w-full flex-row-reverse overflow-x-hidden border-b-2 border-r-2 border-solid border-dark-secondary pr-2.5 pt-12 pb-12">
-          {props.candles.map((c) => (
-            <Candle key={c.id} candle={c} factor={factor} max={maxY} />
-          ))}
-        </div>
-        <div className="h-content w-12"></div>
-      </div>
-      <div className="w-content h-12"></div>
-    </div>
-  );
-};
-
 const Candle: React.FC<{
   candle: candles;
   max: number;
   factor: number;
 }> = (props) => {
-  const thinHeightCalc = Math.round(
-    (props.candle.high - props.candle.low) * props.factor
-  );
-  const thinMarginTop = Math.round(
-    (props.max - props.candle.high) * props.factor
-  );
-
+  const thinHeightCalc = (props.candle.high - props.candle.low) * props.factor;
+  const thinMarginTop = (props.max - props.candle.high) * props.factor;
   const thinStyle = {
     height: thinHeightCalc + "px",
     marginTop: thinMarginTop + "px",
   };
 
-  const thickHeightCalc = Math.round(
-    Math.abs(props.candle.open - props.candle.close) * props.factor
-  );
-  const thickMarginTop = Math.round(
+  const thickHeightCalc =
+    Math.abs(props.candle.open - props.candle.close) * props.factor;
+  const thickMarginTop =
     (props.candle.high -
       (props.candle.open > props.candle.close
         ? props.candle.open
         : props.candle.close)) *
-      props.factor
-  );
-
+    props.factor;
   const thickStyle = {
     height: thickHeightCalc + "px",
     marginTop: thickMarginTop - thinHeightCalc + "px",

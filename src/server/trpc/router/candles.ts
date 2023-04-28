@@ -4,7 +4,7 @@ import { router, protectedProcedure } from "../trpc";
 
 export const candlesRouter = router({
   getByTicker: protectedProcedure
-    .input(z.object({ ticker: z.string() }))
+    .input(z.object({ ticker: z.string(), limit: z.number().optional() }))
     .query(({ input, ctx }) => {
       return ctx.prisma.candles.findMany({
         where: {
@@ -15,6 +15,7 @@ export const candlesRouter = router({
         orderBy: {
           date: "desc",
         },
+        take: input.limit,
       });
     }),
 });
