@@ -8,6 +8,7 @@ const ChartFrame: React.FC<{
 }> = (props) => {
   const maxHeight = 500;
   const padding = 48;
+  const textSize = 16;
 
   const maxY = Math.max(...props.candles.map((x) => x.high));
   const minY = Math.max(0, Math.min(...props.candles.map((x) => x.low)));
@@ -25,7 +26,7 @@ const ChartFrame: React.FC<{
         </div>
         <div className="h-fill flex w-12 flex-col overflow-y-hidden pt-12 pb-12">
           <ChartYbar
-            renderHeight={maxHeight + padding}
+            renderHeight={maxHeight + padding - textSize / 2}
             padding={padding}
             ppc={ppc}
             max={maxY}
@@ -62,8 +63,9 @@ const CurrentPrice: React.FC<{
   };
 
   return (
-    <div style={style} className="float-right h-px w-2 bg-red-500 text-xs">
-      {props.price}
+    <div style={style} className="absolute flex flex-row">
+      <div className="h-px w-2 bg-red-500"></div>
+      <p className="ml-1 mt-[-7px] text-xs">{props.price}</p>
     </div>
   );
 };
@@ -94,9 +96,12 @@ const ChartYbar: React.FC<{
       {marginTopPrice + props.padding > 0 ? (
         <div
           style={{ marginTop: marginTopPrice + "px" }}
-          className="absolute h-px w-2 bg-slate-400 text-xs text-slate-400"
+          className="absolute flex flex-row"
         >
-          {highest + delta}
+          <div className="h-px w-2 bg-slate-400"></div>
+          <p className="ml-1 mt-[-7px] text-xs text-slate-400">
+            {highest + delta}
+          </p>
         </div>
       ) : (
         <></>
@@ -110,12 +115,9 @@ const ChartYbar: React.FC<{
           };
 
           return (
-            <div
-              key={i}
-              style={style}
-              className="absolute h-px w-2 bg-slate-400 text-xs text-slate-400"
-            >
-              {v}
+            <div key={i} style={style} className="absolute flex flex-row">
+              <div className="h-px w-2 bg-slate-400"></div>
+              <p className="ml-1 mt-[-7px] text-xs text-slate-400">{v}</p>
             </div>
           );
         }
