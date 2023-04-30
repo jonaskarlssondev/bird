@@ -2,6 +2,7 @@ import { candles } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../../utils/trpc";
 import ChartFrame from "./chartFrame";
+import { useState } from "react";
 
 const Chart: React.FC<{ ticker: string }> = (props) => {
   const { data: sessionData } = useSession();
@@ -74,13 +75,34 @@ const Candle: React.FC<{
     marginTop: thickMarginTop - thinHeightCalc + "px",
   };
 
+  const [showDetails, setShowDetails] = useState(false);
+
   const inc = props.candle.close > props.candle.open;
-  const bg = inc ? "bg-green-800 " : "bg-red-800 ";
+  const bg = showDetails ? "bg-white" : inc ? "bg-green-800 " : "bg-red-800 ";
 
   return (
-    <div style={thinStyle}>
-      <div className={bg + " ml-1 h-full w-0.5"}></div>
-      <div style={thickStyle} className={bg + " ml-0.5 w-1.5"}></div>
+    <div>
+      <div
+        style={thinStyle}
+        onMouseOver={() => setShowDetails(true)}
+        onMouseLeave={() => setShowDetails(false)}
+      >
+        <div className={bg + " ml-1 h-full w-0.5"}></div>
+        <div style={thickStyle} className={bg + " ml-0.5 w-1.5"}></div>
+      </div>
+
+      {showDetails ? (
+        <div className="absolute z-10 mt-1 rounded bg-gray-600 p-1 text-xs text-slate-400">
+          <p>Date: {props.candle.date.toLocaleDateString()}</p>
+          <p>Open: {props.candle.open}</p>
+          <p>High: {props.candle.high}</p>
+          <p>Low: {props.candle.low}</p>
+          <p>Close: {props.candle.close}</p>
+          <p>Volume: {Number(props.candle.volume)}</p>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
