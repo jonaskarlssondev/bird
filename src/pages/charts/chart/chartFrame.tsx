@@ -40,7 +40,9 @@ const ChartFrame: React.FC<{
           </ChartYbar>
         </div>
       </div>
-      <div className="h-12 w-full"></div>
+      <div className="h-12 w-full">
+        <ChartXbar candles={props.candles} ppc={6}></ChartXbar>
+      </div>
     </div>
   );
 };
@@ -66,6 +68,40 @@ const CurrentPrice: React.FC<{
     <div style={style} className="absolute flex flex-row">
       <div className="h-px w-2 bg-red-500"></div>
       <p className="ml-1 mt-[-7px] text-xs">{props.price}</p>
+    </div>
+  );
+};
+
+const ChartXbar: React.FC<{ candles: candles[]; ppc: number }> = (props) => {
+  if (props.candles.length === 0 || !props.candles[0]) {
+    return <></>;
+  }
+
+  const format = new Intl.DateTimeFormat("en", { month: "short" });
+  let currMonth = format.format(props.candles[0].date);
+
+  return (
+    <div className="flex flex-row-reverse pr-12 text-xs text-slate-400">
+      {props.candles.map((c, i) => {
+        const month = format.format(c.date);
+        if (month !== currMonth) {
+          let display = currMonth;
+          currMonth = month;
+
+          return (
+            <div
+              key={i}
+              className="absolute flex w-px flex-col"
+              style={{ marginRight: 8 * (i + 1) + "px" }}
+            >
+              <div className="h-2 bg-slate-400"></div>
+              <p className="mt-px ml-[-10px] text-xs text-slate-400">
+                {display}
+              </p>
+            </div>
+          );
+        }
+      })}
     </div>
   );
 };
