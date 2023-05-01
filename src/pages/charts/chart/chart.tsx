@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { trpc } from "../../../utils/trpc";
 import ChartFrame from "./chartFrame";
 import { useState } from "react";
+import Volume from "../components/volume";
 
 const Chart: React.FC<{ ticker: string }> = (props) => {
   const { data: sessionData } = useSession();
@@ -33,11 +34,12 @@ const Chart: React.FC<{ ticker: string }> = (props) => {
     return (
       <div className="flex-1 flex-col rounded border border-solid border-dark-secondary p-2">
         <ChartFrame title={props.ticker} candles={data}>
-          <div className="flex flex-row-reverse">
+          <div className="flex flex-row-reverse pt-6 pb-6">
             {data.map((c) => (
               <Candle key={c.id} candle={c} factor={ppc} max={maxY} />
             ))}
           </div>
+          <Volume data={data.map((x) => Number(x.volume))} />
         </ChartFrame>
       </div>
     );
