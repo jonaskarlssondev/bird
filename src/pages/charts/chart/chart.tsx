@@ -1,4 +1,4 @@
-import { candles } from "@prisma/client";
+import type { candles } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../../utils/trpc";
 import ChartFrame from "./chartFrame";

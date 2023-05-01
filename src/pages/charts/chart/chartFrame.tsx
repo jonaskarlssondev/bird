@@ -1,5 +1,5 @@
-import { candles } from "@prisma/client";
-import { ReactNode } from "react";
+import type { candles } from "@prisma/client";
+import type { ReactNode } from "react";
 
 const ChartFrame: React.FC<{
   candles: candles[];
@@ -85,7 +85,7 @@ const ChartXbar: React.FC<{ candles: candles[]; ppc: number }> = (props) => {
       {props.candles.map((c, i) => {
         const month = format.format(c.date);
         if (month !== currMonth) {
-          let display = currMonth;
+          const display = currMonth;
           currMonth = month;
 
           return (
