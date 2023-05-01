@@ -10,7 +10,7 @@ export const Profile: React.FC<{ expandable?: boolean }> = ({
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="flex h-10 w-10 flex-col items-end gap-1">
+    <div className="flex h-8 w-8 flex-col items-end gap-1">
       <div
         className={expandable ? "hover:cursor-pointer" : ""}
         onClick={() => {
@@ -41,22 +41,24 @@ const ExpandedProfile: React.FC = () => {
   return (
     <div className="z-[999] flex h-fit w-fit flex-col divide-y divide-dark-secondary rounded border border-solid border-dark-secondary bg-dark-primary">
       <div className="flex items-center justify-center gap-2 whitespace-nowrap p-2">
-        <div className="h-14 w-14">
+        <div className="h-10 w-10">
           {sessionData && sessionData.user?.image && (
             <Image
               className="rounded-full"
-              width={56}
-              height={56}
+              width={48}
+              height={48}
               src={sessionData.user?.image}
               alt="User profile image"
             />
           )}
         </div>
-        {sessionData && <span>{sessionData.user?.name}</span>}
+        {sessionData && (
+          <span className="text-sm">{sessionData.user?.name}</span>
+        )}
       </div>
 
       <div className="flex justify-end p-2">
-        <ul className="text-sm">
+        <ul className="text-xs">
           <li>
             <button className="hover:cursor-pointer" onClick={() => signOut()}>
               Sign out
