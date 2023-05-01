@@ -1,5 +1,6 @@
 import type { candles } from "@prisma/client";
 import type { ReactNode } from "react";
+import CurrentPrice from "../components/currentPrice";
 
 const ChartFrame: React.FC<{
   candles: candles[];
@@ -24,7 +25,7 @@ const ChartFrame: React.FC<{
         <div className="flex w-full flex-row-reverse overflow-x-hidden border-b-2 border-r-2 border-solid border-dark-secondary pr-2.5 pt-12 pb-12">
           {props.children}
         </div>
-        <div className="h-fill flex w-12 flex-col overflow-y-hidden pt-12 pb-12">
+        <div className="h-fill flex w-20 flex-col overflow-y-hidden pt-12 pb-12">
           <ChartYbar
             renderHeight={maxHeight + padding - textSize / 2}
             padding={padding}
@@ -49,29 +50,6 @@ const ChartFrame: React.FC<{
 
 export default ChartFrame;
 
-const CurrentPrice: React.FC<{
-  price?: number;
-  ppc: number;
-  max: number;
-}> = (props) => {
-  if (!props.price) {
-    return <></>;
-  }
-
-  const margin = props.ppc * (props.max - props.price);
-
-  const style = {
-    marginTop: margin + "px",
-  };
-
-  return (
-    <div style={style} className="absolute flex flex-row">
-      <div className="h-px w-2 bg-red-500"></div>
-      <p className="ml-1 mt-[-7px] text-xs">{props.price}</p>
-    </div>
-  );
-};
-
 const ChartXbar: React.FC<{ candles: candles[]; ppc: number }> = (props) => {
   if (props.candles.length === 0 || !props.candles[0]) {
     return <></>;
@@ -81,7 +59,7 @@ const ChartXbar: React.FC<{ candles: candles[]; ppc: number }> = (props) => {
   let currMonth = format.format(props.candles[0].date);
 
   return (
-    <div className="flex flex-row-reverse pr-12 text-xs text-slate-400">
+    <div className="flex flex-row-reverse pr-20 text-xs text-slate-400">
       {props.candles.map((c, i) => {
         const month = format.format(c.date);
         if (month !== currMonth) {
