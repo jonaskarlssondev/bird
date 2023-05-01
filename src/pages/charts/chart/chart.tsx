@@ -1,7 +1,7 @@
 import type { candles } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../../utils/trpc";
-import ChartFrame from "./chartFrame";
+import ChartFrame from "../frame/chartFrame";
 import { useState } from "react";
 import Volume from "../components/volume";
 
