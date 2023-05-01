@@ -200,21 +200,30 @@ const AddTicker: React.FC<{
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-          <input
-            className={
-              "w-24 rounded bg-dark-secondary p-1 text-xs focus:outline-dark-accent"
-            }
-            placeholder="Ticker"
-            type="text"
-            value={ticker}
-            onChange={(c) => setTicker(c.target.value)}
-          />
-          <button
-            onClick={add}
-            className="w-fit rounded-full border border-solid border-dark-secondary px-3 py-0.5 text-xs font-semibold no-underline outline-dark-accent transition hover:cursor-pointer hover:bg-dark-secondary"
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              add();
+            }}
           >
-            Add
-          </button>
+            <input
+              autoFocus
+              className={
+                "w-24 rounded bg-dark-secondary p-0.5 text-xs focus:outline-dark-accent"
+              }
+              placeholder="Ticker"
+              type="text"
+              value={ticker}
+              onChange={(c) => setTicker(c.target.value)}
+            />
+            <button
+              type="submit"
+              className="ml-1 w-fit rounded-full border border-solid border-dark-secondary px-3 py-0.5 text-xs font-semibold no-underline outline-dark-accent transition hover:cursor-pointer hover:bg-dark-secondary"
+            >
+              Add
+            </button>
+          </form>
         </div>
       )}
     </>
@@ -249,8 +258,15 @@ const CreateWatchlist: React.FC<{ onSuccess: () => void }> = (props) => {
       )}
 
       {createWatchlist && (
-        <div className="flex flex-col gap-2 p-2">
+        <form
+          className="flex flex-col gap-2 p-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            submit();
+          }}
+        >
           <input
+            autoFocus
             className="rounded bg-dark-secondary p-1 text-xs"
             placeholder="Name"
             type="text"
@@ -259,7 +275,7 @@ const CreateWatchlist: React.FC<{ onSuccess: () => void }> = (props) => {
           />
           <div>
             <button
-              onClick={submit}
+              type="submit"
               className="w-fit rounded-full border border-solid border-dark-secondary px-3 py-0.5 text-xs font-semibold no-underline transition hover:cursor-pointer hover:bg-dark-secondary"
             >
               Create
@@ -271,7 +287,7 @@ const CreateWatchlist: React.FC<{ onSuccess: () => void }> = (props) => {
               Cancel
             </button>
           </div>
-        </div>
+        </form>
       )}
     </>
   );

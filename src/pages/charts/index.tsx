@@ -4,7 +4,7 @@ import Chart from "./chart/chart";
 import WatchListSelector from "./watchlist";
 
 const Charts: NextPage = () => {
-  const [activeTicker, setActiveTicker] = useState("AAPL");
+  const [activeTicker, setActiveTicker] = useState("OMXS30");
 
   return (
     <>
