@@ -94,10 +94,19 @@ const Candle: React.FC<{
       {showDetails ? (
         <div className="absolute z-10 mt-1 rounded bg-gray-600 p-1 text-xs text-slate-400">
           <p>Date: {props.candle.date.toLocaleDateString()}</p>
-          <p>Open: {props.candle.open}</p>
-          <p>High: {props.candle.high}</p>
-          <p>Low: {props.candle.low}</p>
-          <p>Close: {props.candle.close}</p>
+          <p>
+            Open: {Math.round((props.candle.open + Number.EPSILON) * 100) / 100}
+          </p>
+          <p>
+            High: {Math.round((props.candle.high + Number.EPSILON) * 100) / 100}
+          </p>
+          <p>
+            Low: {Math.round((props.candle.low + Number.EPSILON) * 100) / 100}
+          </p>
+          <p>
+            Close:{" "}
+            {Math.round((props.candle.close + Number.EPSILON) * 100) / 100}
+          </p>
           <p>Volume: {Number(props.candle.volume)}</p>
         </div>
       ) : (
