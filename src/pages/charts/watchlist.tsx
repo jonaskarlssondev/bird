@@ -12,7 +12,7 @@ const WatchListSelector: React.FC<{
     return <></>;
   }
 
-  const { data, refetch, status } = trpc.user.getWatchlist.useQuery({
+  const { data, refetch, status } = trpc.watchlist.getWatchlist.useQuery({
     userId: sessionData.user.id,
   });
 
@@ -28,6 +28,7 @@ const WatchListSelector: React.FC<{
           onSelectTicker={(ticker) => props.onSelectTicker(ticker)}
           onAddTickerSuccess={() => refetch()}
           onRemoveTickerSuccess={() => refetch()}
+          onRemoveWatchlistSuccess={() => refetch()}
         />
       </div>
     );
@@ -35,7 +36,7 @@ const WatchListSelector: React.FC<{
 
   return (
     <div className="flex h-fit w-fit flex-col divide-y divide-dark-secondary rounded border border-solid border-dark-secondary">
-      <span className="p-2">You do not have a watchlist</span>
+      <span className="p-2 text-sm">You do not have a watchlist</span>
       <CreateWatchlist onSuccess={() => refetch()} />
     </div>
   );
@@ -48,15 +49,16 @@ const Watchlist: React.FC<{
   onSelectTicker: (ticker: string) => void;
   onAddTickerSuccess: () => void;
   onRemoveTickerSuccess: () => void;
+  onRemoveWatchlistSuccess: () => void;
 }> = (props) => {
-  const removeTicker = trpc.user.removeTicker.useMutation({
+  const removeTickerMutation = trpc.watchlist.deleteTicker.useMutation({
     onSuccess: () => {
       props.onRemoveTickerSuccess();
     },
   });
 
-  const remove = (id: string) => {
-    removeTicker.mutate({ tickerId: id });
+  const removeTicker = (id: string) => {
+    removeTickerMutation.mutate({ tickerId: id, watchlistId: props.list.id });
   };
 
   const [ticker, setTicker] = useState(props.list.tickers[0]?.ticker);
@@ -67,10 +69,39 @@ const Watchlist: React.FC<{
     }
   };
 
+  const removeWatchlistMutation = trpc.watchlist.deleteWatchlist.useMutation({
+    onSuccess: () => props.onRemoveWatchlistSuccess(),
+  });
+
+  const removeWatchlist = (id: string) => {
+    removeWatchlistMutation.mutate({
+      watchlistId: props.list.id,
+    });
+  };
+
   return (
     <>
-      <h1 className="p-1">{props.list.name}</h1>
-      <ul className="p-1 text-sm">
+      <span className="flex flex-row items-center justify-between p-1">
+        <h1 className="text-sm">{props.list.name}</h1>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="h-4 w-4 hover:cursor-pointer"
+          onClick={() => {
+            removeWatchlist(props.list.id);
+          }}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </span>
+      <ul className="p-1 text-xs">
         {props.list.tickers.map((x) => (
           <li key={x.id} className="flex items-center py-0.5">
             <svg
@@ -81,7 +112,7 @@ const Watchlist: React.FC<{
               stroke="currentColor"
               className="h-3 w-3 hover:cursor-pointer"
               onClick={() => {
-                remove(x.id);
+                removeTicker(x.id);
               }}
             >
               <path
@@ -116,7 +147,7 @@ const AddTicker: React.FC<{
   const [ticker, setTicker] = useState("");
   const [input, toggleInput] = useState(false);
 
-  const addTicker = trpc.user.addTicker.useMutation({
+  const addTicker = trpc.watchlist.addTicker.useMutation({
     onSuccess: () => {
       props.onSuccess();
       setTicker("");
@@ -171,7 +202,7 @@ const AddTicker: React.FC<{
           </svg>
           <input
             className={
-              "rounded bg-dark-secondary p-1 text-xs focus:outline-dark-accent"
+              "w-24 rounded bg-dark-secondary p-1 text-xs focus:outline-dark-accent"
             }
             placeholder="Ticker"
             type="text"
@@ -194,7 +225,7 @@ const CreateWatchlist: React.FC<{ onSuccess: () => void }> = (props) => {
   const [name, setName] = useState("New watchlist");
   const [createWatchlist, setCreateWatchlist] = useState(false);
 
-  const mutation = trpc.user.createWatchlist.useMutation({
+  const mutation = trpc.watchlist.createWatchlist.useMutation({
     onSuccess: () => {
       props.onSuccess();
     },
@@ -212,7 +243,7 @@ const CreateWatchlist: React.FC<{ onSuccess: () => void }> = (props) => {
             onClick={() => setCreateWatchlist((e) => !e)}
             className="w-fit rounded-full border border-solid border-dark-secondary px-3 py-0.5 text-xs font-semibold no-underline transition hover:cursor-pointer hover:bg-dark-secondary"
           >
-            Create new
+            Create watchlist
           </button>
         </div>
       )}

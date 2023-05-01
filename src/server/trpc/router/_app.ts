@@ -1,9 +1,11 @@
 import { router } from "../trpc";
 import { candlesRouter } from "./candles";
 import { userRouter } from "./user";
+import { watchlistRouter } from "./watchlist";
 
 export const appRouter = router({
   candles: candlesRouter,
+  watchlist: watchlistRouter,
   user: userRouter,
 });
 
