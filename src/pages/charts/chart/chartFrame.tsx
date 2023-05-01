@@ -22,7 +22,7 @@ const ChartFrame: React.FC<{
     <div className="flex h-full min-h-[250px] flex-col items-center">
       <div>{props.title}</div>
       <div className="flex w-full">
-        <div className="flex w-full flex-row-reverse overflow-x-hidden border-b-2 border-r-2 border-solid border-dark-secondary pr-2.5 pt-12 pb-12">
+        <div className="flex w-full flex-col overflow-x-hidden border-b-2 border-r-2 border-solid border-dark-secondary pr-2.5 pt-12 pb-12">
           {props.children}
         </div>
         <div className="h-fill flex w-20 flex-col overflow-y-hidden pt-12 pb-12">
