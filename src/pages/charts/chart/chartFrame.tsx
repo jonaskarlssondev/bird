@@ -70,7 +70,7 @@ const ChartXbar: React.FC<{ candles: candles[]; ppc: number }> = (props) => {
             <div
               key={i}
               className="absolute flex w-px flex-col"
-              style={{ marginRight: 8 * (i + 1) + "px" }}
+              style={{ marginRight: 8 * i + 2 + "px" }}
             >
               <div className="h-2 bg-slate-400"></div>
               <p className="mt-px ml-[-10px] text-xs text-slate-400">
