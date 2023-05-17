@@ -21,33 +21,52 @@ const ChartFrame: React.FC<{
   const ppc = maxHeight / (maxY - minY);
 
   return (
-    <div className="flex h-full min-h-[250px] flex-col items-center">
+    <div className="flex h-full min-w-[500px] flex-col items-center">
       <div>{props.title}</div>
       <div className="flex w-full">
-        <div className="flex w-full flex-col overflow-x-hidden border-b-2 border-r-2 border-solid border-dark-secondary pr-2.5">
-          {props.children}
-        </div>
-        <div className="h-fill flex w-20 flex-col overflow-y-hidden pt-6 pb-6">
-          <ChartYbar
-            renderHeight={maxHeight + padding - textSize / 2}
-            padding={padding}
-            ppc={ppc}
-            max={maxY}
-            min={minY}
-          >
-            <CurrentPrice
-              price={props.candles[0]?.close}
+        <ContentOrEmptyMessage
+          showEmpty={!props.candles || props.candles.length === 0}
+        >
+          <div className="flex w-full flex-col overflow-x-hidden border-b-2 border-r-2 border-solid border-dark-secondary pr-2.5">
+            {props.children}
+          </div>
+          <div className="h-fill flex w-20 flex-col overflow-y-hidden pt-6 pb-6">
+            <ChartYbar
+              renderHeight={maxHeight + padding - textSize / 2}
+              padding={padding}
               ppc={ppc}
               max={maxY}
-            />
-          </ChartYbar>
-        </div>
+              min={minY}
+            >
+              <CurrentPrice
+                price={props.candles[0]?.close}
+                ppc={ppc}
+                max={maxY}
+              />
+            </ChartYbar>
+          </div>
+        </ContentOrEmptyMessage>
       </div>
       <div className="h-12 w-full">
         <ChartXbar candles={props.candles} ppc={6}></ChartXbar>
       </div>
     </div>
   );
+};
+
+const ContentOrEmptyMessage: React.FC<{
+  children: ReactNode;
+  showEmpty: boolean;
+}> = (props) => {
+  if (props.showEmpty) {
+    return (
+      <div className="flex w-full items-center justify-center pt-14 pb-16 text-xs text-slate-400">
+        No data available
+      </div>
+    );
+  }
+
+  return <>{props.children}</>;
 };
 
 export default ChartFrame;
