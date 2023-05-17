@@ -11,6 +11,12 @@ export const candlesRouter = router({
           ticker: {
             equals: input.ticker,
           },
+          open: {
+            not: 0,
+          },
+          close: {
+            not: 0,
+          },
         },
         orderBy: {
           date: "desc",

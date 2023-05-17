@@ -14,11 +14,18 @@ const ChartFrame: React.FC<{
   const textSize = 16;
 
   const maxY = Math.max(...props.candles.map((x) => x.high));
-  const minY = Math.max(0, Math.min(...props.candles.map((x) => x.low)));
+  const minY = Math.max(
+    0,
+    Math.min(...props.candles.filter((x) => x.low !== 0).map((x) => x.low))
+  );
 
   // Pixels Per Currency - Computes the number of pixels per currency unit.
   // If a security has moved 500 e.g. dollars in the timespan - then each dollar would be represented by 1 pixel.
   const ppc = maxHeight / (maxY - minY);
+
+  console.log("maxY: " + maxY);
+  console.log("minY: " + minY);
+  console.log("ppc: " + ppc);
 
   return (
     <div className="flex h-full min-w-[500px] flex-col items-center">

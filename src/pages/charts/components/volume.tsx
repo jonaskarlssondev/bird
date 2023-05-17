@@ -4,7 +4,7 @@ const Volume: React.FC<{ data: number[] }> = (props) => {
 
   return (
     <div className="flex h-16 w-full flex-row-reverse items-end">
-      {props.data.map((x) => {
+      {props.data.map((x, i) => {
         // Max height is 48, min height is 4. Compute height as percentage of max and min
         const height = (44 * x) / (maxVol - minVol);
 
@@ -12,7 +12,9 @@ const Volume: React.FC<{ data: number[] }> = (props) => {
           height: height + "px",
         };
 
-        return <div style={style} className="ml-0.5 w-1.5 bg-gray-500"></div>;
+        return (
+          <div key={i} style={style} className="ml-0.5 w-1.5 bg-gray-500"></div>
+        );
       })}
     </div>
   );
