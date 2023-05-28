@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Navbar: React.FC = () => {
   return (
-    <section className="flex flex-row gap-2 text-dark-accent">
+    <nav className="flex flex-row gap-2 text-dark-accent">
       <Link href="/" className="hover:cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
           />
         </svg>
       </Link>
-    </section>
+    </nav>
   );
 };
 

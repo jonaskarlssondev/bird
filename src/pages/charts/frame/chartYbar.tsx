@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 const ChartYbar: React.FC<{
   renderHeight: number;
@@ -23,7 +23,7 @@ const ChartYbar: React.FC<{
   return (
     <>
       {props.children}
-      {marginTopPrice + props.padding > 0 ? (
+      {marginTopPrice + props.padding > 0 &&
         <div
           style={{ marginTop: marginTopPrice + "px" }}
           className="absolute flex flex-row"
@@ -33,10 +33,8 @@ const ChartYbar: React.FC<{
             {highest + delta}
           </p>
         </div>
-      ) : (
-        <></>
-      )}
-      {Array.from({ length: 6 }, (_, i) => highest - i * delta).map((v, i) => {
+      }
+      {Array.from({ length: 9 }, (_, i) => highest - i * delta).map((v, i) => {
         const margin = (props.max - v) * props.ppc;
 
         if (margin < props.renderHeight) {

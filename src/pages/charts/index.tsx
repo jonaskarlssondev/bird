@@ -1,30 +1,35 @@
 import { type NextPage } from "next";
-import { useState } from "react";
-import Chart from "./chart/chart";
-import WatchListSelector from "./watchlist";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { trpc } from "../../utils/trpc";
+import CreateWatchList from "./createWatchList";
+import WatchList from "./watchlist";
 
 const Charts: NextPage = () => {
-  const [activeTicker, setActiveTicker] = useState("^OMX");
+    const { data: sessionData } = useSession();
+    const router = useRouter();
 
-  return (
-    <>
-      <div className="max-w-screen flex-between flex overflow-x-hidden">
-        <span className="w-48">
-          <WatchListSelector
-            onSelectTicker={(ticker) => setActiveTicker(ticker)}
-          />
-        </span>
+    if (!sessionData || !sessionData.user) {
+        return <></>;
+    }
 
-        <span className="flex max-w-[calc(100vw-24rem)] flex-1 justify-center">
-          <span className="flex max-w-[1750px]">
-            <Chart ticker={activeTicker} />
-          </span>
-        </span>
+    const { data, refetch, status } = trpc.watchlist.getWatchlist.useQuery({
+        userId: sessionData.user.id,
+    });
 
-        <span className="w-48"></span>
-      </div>
-    </>
-  );
+    if (status === "loading") {
+        return <p>Loading..</p>;
+    }
+
+    if (!data) {
+        return <CreateWatchList onSuccess={refetch}/>
+    }
+
+    return (
+        <div className="w-full flex flex-row justify-center pt-16">
+            <WatchList onSelect={(ticker) => { console.log(ticker); router.push(router.asPath + '/' + ticker)}} />
+        </div>
+    );
 };
 
 export default Charts;

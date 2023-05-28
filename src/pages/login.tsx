@@ -30,7 +30,7 @@ const SignIn: React.FC = () => {
 
   return (
     <section className="flex w-full flex-col items-center justify-center">
-      <h1 className="font-extrabold tracking-tight text-dark-accent/80 hover:cursor-pointer sm:text-[7rem]">
+      <h1 className="font-extrabold tracking-tight text-dark-accent/80 hover:cursor-pointer text-[7rem]">
         <Link href="/">BIRD</Link>
       </h1>
       {sessionData ? (
