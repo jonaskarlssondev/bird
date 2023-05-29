@@ -37,22 +37,23 @@ export default WatchList;
 const WatchlistSelector: React.FC<{
     list: Watchlist & { tickers: WatchlistTicker[] };
     onSelectTicker: (ticker: string) => void;
-    onTickerEvent: (id: string, type: 'add' | 'remove') => void;
+    onTickerEvent: (id: string, type: "add" | "remove") => void;
     onRemoveWatchlistSuccess: () => void;
 }> = (props) => {
     const addTickerMutation = trpc.watchlist.addTicker.useMutation({
-        onSuccess: (data) => props.onTickerEvent(data.id, 'add')
+        onSuccess: (data) => props.onTickerEvent(data.id, "add"),
     });
 
     const addTicker = (ticker: string) => {
         addTickerMutation.mutate({
             ticker: ticker,
-            watchlistId: props.list.id
-        })
-    }
+            watchlistId: props.list.id,
+        });
+    };
 
     const removeTickerMutation = trpc.watchlist.deleteTicker.useMutation({
-        onSuccess: (_, variables) => props.onTickerEvent(variables.tickerId, 'remove')
+        onSuccess: (_, variables) =>
+            props.onTickerEvent(variables.tickerId, "remove"),
     });
 
     const removeTicker = (id: string) => {
@@ -62,7 +63,7 @@ const WatchlistSelector: React.FC<{
         });
     };
 
-    const [ticker, setTicker] = useState('');
+    const [ticker, setTicker] = useState("");
     const selectTicker = (tckr: string) => {
         if (ticker !== tckr) {
             setTicker(tckr);
@@ -102,40 +103,56 @@ const WatchlistSelector: React.FC<{
                     />
                 </svg>
             </span>
-            <ul className="text-sm divide-y divide-dark-secondary/80">
+            <ul className="divide-y divide-dark-secondary/80 text-sm">
+                <li className="flex w-full items.center p-2 hover:cursor-pointer hover:bg-dark-secondary">
+                    <span onClick={() => selectTicker('all')}>SHOW ALL</span>
+                </li>
                 {props.list.tickers.map((x) => (
-                    <li 
-                        key={x.id} 
-                        className="w-full flex items-center p-2 hover:bg-dark-secondary hover:cursor-pointer"
-                        onClick={() => selectTicker(x.ticker)}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="h-3 w-3 z-10"
-                            onClick={() => {
-                                removeTicker(x.id);
-                            }}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M6 18L18 6M6 6l12 12"
-                            />
-                        </svg>
-                        <span className="ml-1 px-1">
-                            {x.ticker}
-                        </span>
-                    </li>
+                    <WatchListItem
+                        key={x.id}
+                        ticker={x}
+                        onSelect={(ticker) => selectTicker(ticker)}
+                        onRemove={(id) => removeTicker(id)}
+                    />
                 ))}
                 <li className="p-2">
                     <AddTicker onAdd={(ticker) => addTicker(ticker)} />
                 </li>
             </ul>
         </>
+    );
+};
+
+const WatchListItem: React.FC<{
+    ticker: WatchlistTicker;
+    onSelect: (ticker: string) => void;
+    onRemove: (id: string) => void;
+}> = (props) => {
+    return (
+        <li className="flex w-full items-center p-2 hover:cursor-pointer hover:bg-dark-secondary">
+            <div
+                className="h-full w-content cursor-pointer"
+                onClick={() => props.onRemove(props.ticker.id)}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="h-3 w-3"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                    />
+                </svg>
+            </div>
+            <div onClick={() => props.onSelect(props.ticker.ticker)}>
+                <span className="ml-1 px-1">{props.ticker.ticker}</span>
+            </div>
+        </li>
     );
 };
 
