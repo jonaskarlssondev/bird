@@ -149,7 +149,7 @@ const WatchListItem: React.FC<{
                     />
                 </svg>
             </div>
-            <div onClick={() => props.onSelect(props.ticker.ticker)}>
+            <div className="flex-1" onClick={() => props.onSelect(props.ticker.ticker)}>
                 <span className="ml-1 px-1">{props.ticker.ticker}</span>
             </div>
         </li>
