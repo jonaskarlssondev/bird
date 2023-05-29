@@ -26,7 +26,9 @@ const All: NextPage = () => {
     return (
         <div className="flex flex-col">
             {data.tickers.map((x) => (
-                <Chart key={x.id} ticker={x.ticker} />
+                <div key={x.id} className="mb-2">
+                    <Chart ticker={x.ticker}/>
+                </div>
             ))}
         </div>
     );
