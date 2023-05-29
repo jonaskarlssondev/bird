@@ -62,7 +62,7 @@ const WatchlistSelector: React.FC<{
         });
     };
 
-    const [ticker, setTicker] = useState(props.list.tickers[0]?.ticker);
+    const [ticker, setTicker] = useState('');
     const selectTicker = (tckr: string) => {
         if (ticker !== tckr) {
             setTicker(tckr);

@@ -59,7 +59,7 @@ const Chart: React.FC<{ ticker: string }> = (props) => {
                 <section className="pt-4 pb-2 border-l border-dark-secondary">
                     <ChartYbar
                       renderHeight={height()-24}
-                      padding={16}
+                      padding={8}
                       ppc={ppc}
                       max={maxY}
                       min={minY}
