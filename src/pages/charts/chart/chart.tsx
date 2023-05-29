@@ -1,7 +1,7 @@
 import type { candles } from "@prisma/client";
 import { useState } from "react";
 import { trpc } from "../../../utils/trpc";
-import { useWindowDimensions } from "../../utils/hooks";
+import { useWindowDimensions } from "../../../utils/hooks";
 import CurrentPrice from "../components/currentPrice";
 import Volume from "../components/volume";
 import ChartXbar from "../frame/chartXbar";
