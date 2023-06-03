@@ -5,16 +5,17 @@ const ChartXbar: React.FC<{ candles: candles[]; }> = (props) => {
     return <></>;
   }
 
-  const format = new Intl.DateTimeFormat("en", { month: "short" });
-  let currMonth = format.format(props.candles[0].date);
+  const monthFmt = new Intl.DateTimeFormat("en", { month: "short" });
+  let currMonth = monthFmt.format(props.candles[0].date);
 
   return (
     <div className="flex flex-row-reverse overflow-x-hidden text-xs text-slate-400">
       {props.candles.map((c, i) => {
-        const month = format.format(c.date);
+        const month = monthFmt.format(c.date);
+
         if (month !== currMonth) {
           const display = currMonth;
-          currMonth = month;
+          currMonth = month;          
 
           return (
             <div
@@ -26,6 +27,11 @@ const ChartXbar: React.FC<{ candles: candles[]; }> = (props) => {
               <p className="mt-px ml-[-10px]">
                 {display}
               </p>
+              {month === 'Dec' && 
+                <p className="mt-px ml-[-15px]">
+                  {c.date.getFullYear()+1}
+                </p>
+              }
             </div>
           );
         }

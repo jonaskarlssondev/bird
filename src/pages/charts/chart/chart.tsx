@@ -47,7 +47,7 @@ const Chart: React.FC<{ ticker: string }> = (props) => {
 
     return (
         <div className="min-h-12 w-full rounded border border-dark-secondary bg-dark-primary p-1">
-            <div className="grid grid-cols-[auto_60px] grid-rows-[auto_30px]">
+            <div className="grid grid-cols-[auto_60px] grid-rows-[auto_50px]">
                 <section className="h-[50vw] max-h-[60vh] min-h-[250px] overflow-hidden pr-[6px]">
                     <div className="flex flex-row-reverse pt-4 pb-2">
                         {data.map((c) => (
