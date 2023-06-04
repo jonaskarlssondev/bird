@@ -26,7 +26,7 @@ model Watchlist {
   id      String  @id @default(cuid())
   name    String
   userId  String
-  tickers  WatchlistTicker[]
+  tickers WatchlistTicker[]
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([name, userId])
@@ -39,6 +39,11 @@ model WatchlistTicker {
   watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
 
   @@unique([ticker, watchlistId])
+}
+
+model fetch {
+  id        String  @id @default(cuid())
+  ticker    String
 }
 
 model Account {
