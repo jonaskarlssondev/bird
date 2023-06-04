@@ -59,4 +59,14 @@ export const watchlistRouter = router({
         },
       });
     }),
+
+  addTickerToFetch: protectedProcedure
+    .input(z.object({ ticker: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.fetch.create({
+        data: {
+          ticker: input.ticker
+        }
+      })
+    })
 });

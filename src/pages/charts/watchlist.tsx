@@ -44,11 +44,15 @@ const WatchlistSelector: React.FC<{
         onSuccess: (data) => props.onTickerEvent(data.id, "add"),
     });
 
+    const addTickerToFetchMutation = trpc.watchlist.addTickerToFetch.useMutation({});
+    
     const addTicker = (ticker: string) => {
         addTickerMutation.mutate({
             ticker: ticker,
             watchlistId: props.list.id,
         });
+        
+        addTickerToFetchMutation.mutate({ticker: ticker});
     };
 
     const removeTickerMutation = trpc.watchlist.deleteTicker.useMutation({
