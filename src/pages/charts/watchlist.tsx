@@ -133,9 +133,10 @@ const WatchListItem: React.FC<{
     onRemove: (id: string) => void;
 }> = (props) => {
     return (
-        <li className="flex w-full items-center p-2 hover:cursor-pointer hover:bg-dark-secondary">
+        <li className="flex w-full items-center hover:cursor-pointer hover:bg-dark-secondary">
+            
             <div
-                className="h-full w-content cursor-pointer"
+                className="h-full w-content cursor-pointer ml-2"
                 onClick={() => props.onRemove(props.ticker.id)}
             >
                 <svg
@@ -153,8 +154,8 @@ const WatchListItem: React.FC<{
                     />
                 </svg>
             </div>
-            <div className="flex-1" onClick={() => props.onSelect(props.ticker.ticker)}>
-                <span className="ml-1 px-1">{props.ticker.ticker}</span>
+            <div className="flex-1 py-2 pr-2 pl-1" onClick={() => props.onSelect(props.ticker.ticker)}>
+                <span className="ml-1">{props.ticker.ticker}</span>
             </div>
         </li>
     );
